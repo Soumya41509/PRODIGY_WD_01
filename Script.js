@@ -1,37 +1,44 @@
-const menu = document.querySelector(".menu-content");
+let nextBtn=document.querySelector('.next')
+let prevBtn=document.querySelector('.prev')
 
-const menuBtn = document.querySelector(".menu-btn");
+let slider=document.querySelector('.slider')
+let sliderList=slider.querySelector('.slider .list')
 
-const cancelBtn = document.querySelector(".cancel-btn");
+let thumbnail=document.querySelector('.thumbnail')
+let thumbnailItems = thumbnail.querySelectorAll('.item')
 
-const navBar = document.querySelector(".navbar");
+thumbnail.appendChild(thumbnailItems[0])
 
-const body = document.querySelector("body");
-
-
-
-menuBtn.onclick =()=>{
-
-    menu.classList.add("active");
-
-    menuBtn.classList.add("hide");
-
-    body.classList.add("disabledScroll");
-
+//function for next button 
+nextBtn.onclick=function(){
+    moveSlider('next')
 }
 
-cancelBtn.onclick =()=>{
-
-    menu.classList.remove("active");
-
-    menuBtn.classList.remove("hide");
-
-    body.classList.remove("disabledScroll");
-
+//function for prev button
+prevBtn.onclick=function(){
+    moveSlider('prev')
 }
 
-window.onscroll =()=>{
+function moveSlider(direction){
+    let sliderItems=sliderList.querySelectorAll('.item')
+    let thumbnailItems = document.querySelectorAll('.thumbnail .item')
 
-    this.scrollY > 20 ? navBar.classList.add("sticky"): navBar.classList.remove("sticky");
+    if(direction==='next'){
+        sliderList.appendChild(sliderItems[0])
+        thumbnail.appendChild(thumbnailItems[0])
+        slider.classList.add('next')
+    }
+    else{
+        sliderList.prepend(sliderItems[sliderItems.length-1])
+        thumbnail.prepend(thumbnailItems[thumbnailItems.length-1])
+        slider.classList.add('prev')
+    }
 
+    slider.addEventListener('animationend',function(){
+        if(direction==='next')
+            slider.classList.remove('next')
+        else{
+            slider.classList.remove('prev')
+        }
+    },{once: true})//remove the event listener after its triggered
 }
